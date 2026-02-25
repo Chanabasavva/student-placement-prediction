@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Placement Prediction</title>
+    <style>
+        body {
+            background: #667eea;
+            font-family: Arial;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .box {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            width: 300px;
+            text-align: center;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            margin: 6px 0;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background: #667eea;
+            color: white;
+            border: none;
+            margin-top: 10px;
+        }
+        #result {
+            margin-top: 15px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="box">
+    <h3>Placement Prediction</h3>
+
+    <input id="cgpa" placeholder="CGPA">
+    <input id="internships" placeholder="Internships">
+    <input id="projects" placeholder="Projects">
+    <input id="skills" placeholder="Skills">
+    <input id="communication" placeholder="Communication">
+
+    <button onclick="predict()">Predict</button>
+
+    <div id="result"></div>
+</div>
+
+<script>
+function predict() {
+    fetch("http://127.0.0.1:5000/predict", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+            cgpa: document.getElementById("cgpa").value,
+            internships: document.getElementById("internships").value,
+            projects: document.getElementById("projects").value,
+            skills: document.getElementById("skills").value,
+            communication: document.getElementById("communication").value
+        })
+    })
+    .then(res => res.json())
+    .then(data => {
+        document.getElementById("result").innerText = data.prediction;
+    });
+}
+</script>
+
+</body>
+</html>
